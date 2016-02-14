@@ -2,6 +2,11 @@
 Cookbook which performs a very basic installation of MSSQL Server 2014 Express using the [BoxStarter Cookbook](https://github.com/mwrock/boxstarter-cookbook) and [MsSqlServer2014Express](https://chocolatey.org/packages/MsSqlServer2014Express) Chocolatey package.  
 This cookbook is useful as an example of how to install and configure MSSQL in a test-kitchen compatible manner and is also used by the [test_kitchen_mssql_template](https://github.com/Sam-Martin/test_kitchen_mssql_template).
 
+# Attributes
+* `['test_kitchen_mssql_helpers']['chef_client_user_password']` (Must contain the password of the user executing chef-client)  
+* `['test_kitchen_mssql_helpers']['sa_password']` (Declares the SA password for MSSQL)
+
+
 # Dependencies
 ## BoxStarter
 Matt Wrock's [Boxstarter.org](http://boxstarter.org) is used by this cookbook to automatically create a scheduled task to install the [MsSqlServer2014Express](https://chocolatey.org/packages/MsSqlServer2014Express) Chocolatey package.  
