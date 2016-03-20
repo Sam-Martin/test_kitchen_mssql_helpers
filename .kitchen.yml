@@ -1,0 +1,25 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: nodes
+
+platforms:
+  - name: windows-mssqlserver
+    driver_config:
+      box: mwrock/Windows2012R2
+      network:
+            - ["private_network", {type: "dhcp"}]
+      customize:
+        usb: 'off'
+    run_list:
+        - test_kitchen_mssql_helpers::server
+  - name: windows-2012r2
+    driver_config:
+      box: mwrock/Windows2012R2
+      network:
+            - ["private_network", {type: "dhcp"}]
+
+suites:
+  - name: default
