@@ -4,30 +4,30 @@ require 'json'
 describe 'sql server' do
   let(:sql_server) do
     JSON.parse(
-      IO.read(File.join(ENV['TEMP'] || '/tmp', 
-        'kitchen/nodes/default-windows-mssqlserver.json'))
+      IO.read(File.join(ENV['TEMP'] || '/tmp',
+                        'kitchen/nodes/default-windows-mssqlserver.json'))
     )
   end
   let(:default_node) do
     JSON.parse(
-      IO.read(File.join(ENV['TEMP'] || '/tmp', 
-        'kitchen/nodes/default-windows-2012r2.json'))
+      IO.read(File.join(ENV['TEMP'] || '/tmp',
+                        'kitchen/nodes/default-windows-2012r2.json'))
     )
   end
-  let(:local_node_private_ip){
-    IO::popen(["powershell.exe", 
-      "(Get-NetIPConfiguration | " \
-      "?{!$_.IPv4DefaultGateway}).IPv4Address.IPAddress"]) {|io| io.read}.chomp
-  }
-  let(:ip) { 
+  let(:local_node_private_ip) do
+    IO.popen(['powershell.exe',
+              '(Get-NetIPConfiguration | ' \
+              '?{!$_.IPv4DefaultGateway}).IPv4Address.IPAddress'], &:read).chomp
+  end
+  let(:ip) do
     # Use the first three octets of this node's private IP to find the IP of
     #   the MSSQL node which is on the correct subnet
     ip_array = sql_server['automatic']['ipaddress']
-    return ip_array if ip_array.class === 'String'
-    ip_array.find { |e| 
-      /#{local_node_private_ip.gsub(/\d{1,3}$/,'')}\d{1,3}$/ =~ e
-    } 
-  }
+    return ip_array if ip_array.is_a? String
+    ip_array.find do |e|
+      /#{local_node_private_ip.gsub(/\d{1,3}$/, '')}\d{1,3}$/ =~ e
+    end
+  end
   let(:connection) do
     require 'tiny_tds'
     ::TinyTds::Client.new(
